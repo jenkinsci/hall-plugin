@@ -48,7 +48,7 @@ public class HallPublisher extends Notifier {
 	public boolean perform(@SuppressWarnings("rawtypes") AbstractBuild build, Launcher launcher, BuildListener listener) throws InterruptedException, IOException {
 
 		String jobName = build.getFullDisplayName();
-		int buildNumber = build.getNumber();
+		String duration = build.getDurationString();
 		@SuppressWarnings("deprecation")
 		String buildUrl = build.getAbsoluteUrl();
 		
@@ -57,30 +57,30 @@ public class HallPublisher extends Notifier {
 			if (!publish_success) {
 				return true;
 			}
-			result = "success";
+			result = "succeeded";
 		} else if (build.getResult() == Result.UNSTABLE) {
 			if (!publish_unstable) {
 				return true;
 			}
-			result = "unstable";
+			result = "was unstable";
 		} else if (build.getResult() == Result.FAILURE) {
 			if (!publish_failure) {
 				return true;
 			}
-			result = "failure";
+			result = "failed";
 		} else {
 			return true;
 		}
 		
-		URL url = new URL("insertsomeurlhere.com");
+		URL url = new URL(String.format("https://hall.com/api/1/services/zapier/%s", api_key));
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setDoOutput(true);
 		
+		String message = String.format("<a target=\"_blank\" href=\"%s\">%s</a> %s in %s", buildUrl, jobName, result, duration);
+		
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("job_name", jobName);
-		params.put("build_number", String.valueOf(buildNumber));
-		params.put("result", result);
-		params.put("url", buildUrl);
+		params.put("message", message);
+		params.put("service_title", "Jenkins");
 
 		OutputStream os = connection.getOutputStream();
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
