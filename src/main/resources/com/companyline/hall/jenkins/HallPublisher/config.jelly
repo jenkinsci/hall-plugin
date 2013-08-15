@@ -2,10 +2,10 @@
   <f:entry title="Room API Token" field="api_key">
     <f:textbox />
   </f:entry>
-  <f:entry title="Publish on Success" field="publish_failure">
+  <f:entry title="Publish on Success" field="publish_success">
   	<f:checkbox />
   </f:entry>
-  <f:entry title="Publish on Failure" field="publish_success">
+  <f:entry title="Publish on Failure" field="publish_failure">
   	<f:checkbox />
   </f:entry>
   <f:entry title="Publish on Unstable" field="publish_unstable">
