@@ -72,7 +72,7 @@ public class HallPublisher extends Notifier {
 			return true;
 		}
 		
-		URL url = new URL(String.format("https://hall.com/api/1/services/jenkins/%s", api_key));
+		URL url = new URL(String.format("https://hall.com/api/1/services/zapier/%s", api_key));
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setDoOutput(true);
 		
